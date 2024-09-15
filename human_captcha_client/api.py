@@ -32,3 +32,12 @@ def post_captcha_solution(
     res.raise_for_status()
     logger.info("Success.")
     return res.json()
+
+
+def skip_captcha(url: str, auth: TokenAuth, task_id: int):
+    logger.info("Skipping captcha...")
+    url = urljoin(url, f"/api/captcha-tasks/{task_id}/skip/")
+    res = httpx.patch(url, auth=auth, verify=False, timeout=30)
+    res.raise_for_status()
+    logger.info("Success.")
+    return res.json()

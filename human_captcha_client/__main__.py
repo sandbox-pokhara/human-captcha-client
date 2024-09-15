@@ -7,6 +7,7 @@ from human_captcha_client import logger
 from human_captcha_client.api import post_captcha_solution
 from human_captcha_client.api import request_captcha_task
 from human_captcha_client.api import retrieve_settings
+from human_captcha_client.api import skip_captcha
 from human_captcha_client.auth import TokenAuth
 from human_captcha_client.bbox import BboxSolver
 from human_captcha_client.grid import GridSolver
@@ -68,9 +69,10 @@ def main_loop(args: Namespace):
             else:
                 raise NotImplementedError("Captcha type not supported")
             logger.info("Solution received.")
-            if solution == []:
-                raise NotImplementedError("Skip is not implemented.")
-            post_captcha_solution(args.url, auth, task["id"], solution)
+            if solution:
+                post_captcha_solution(args.url, auth, task["id"], solution)
+            else:
+                skip_captcha(args.url, auth, task["id"])
             time.sleep(5)
         except Exception as e:
             logger.exception(f"Unhandled exception: {e}")
