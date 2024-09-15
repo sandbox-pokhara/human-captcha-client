@@ -1,19 +1,21 @@
 # human-captcha-client
 
-
-## requirements
+## Requirements
 
 - Python 3.11+
 
-## Production Setup
+## Installation
+
 - Install python with version>=3.11 from https://www.python.org/downloads/.
 - Install human-captcha-client using this command in your terminal.
-    ```
-    pip install human-captcha-client
-    ```
-- Run the program using
-    ```
-    python -m human-catpcha-client <YOUR_API_KEY>
-    ```
-    Replace `<YOUR_API_KEY>` with your api key.
-    
+  ```
+  pip install human-captcha-client
+  ```
+
+## Usage
+
+```
+human-catpcha-client <TOKEN>
+```
+
+Replace `<TOKEN>` with your token.
