@@ -7,6 +7,7 @@ class GridSolver(tk.Tk):
         super().__init__()
         self.data = data
         self.title("Captcha")
+        self.solution: list[int] = []
 
         # Keep the references of PhotoImage to prevent garbage collection
         self.photos: list[tk.PhotoImage] = []
@@ -84,7 +85,8 @@ class GridSolver(tk.Tk):
             self.image_buttons[index].config(relief="sunken")
 
     def submit_selection(self) -> None:
-        print(self.selected_images)
+        self.solution = self.selected_images
+        self.destroy()
 
     def skip(self) -> None:
-        print("skip")
+        self.destroy()

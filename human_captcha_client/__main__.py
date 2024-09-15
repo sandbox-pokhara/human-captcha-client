@@ -8,6 +8,8 @@ from human_captcha_client.api import post_captcha_solution
 from human_captcha_client.api import request_captcha_task
 from human_captcha_client.api import retrieve_settings
 from human_captcha_client.auth import TokenAuth
+from human_captcha_client.bbox import BboxSolver
+from human_captcha_client.grid import GridSolver
 
 
 def version_to_tuple(v: str):
@@ -43,11 +45,32 @@ def main_loop(args: Namespace):
                 continue
 
             logger.info(f"New task received!")
-            token = solver_server.token(
-                task["captcha_obj"]["rqdata"], task["captcha_obj"]["sitekey"]
-            )
-            logger.info(f"Token received.")
-            post_captcha_solution(args.url, auth, task["id"], token)
+
+            if "rqdata" in task["captcha_obj"]:
+                solution = solver_server.token(
+                    task["captcha_obj"]["rqdata"],
+                    task["captcha_obj"]["sitekey"],
+                )
+            elif (
+                "type" in task["captcha_obj"]
+                and task["captcha_obj"]["type"] == "GRID"
+            ):
+                app = GridSolver(task)
+                app.mainloop()
+                solution = app.solution
+            elif (
+                "type" in task["captcha_obj"]
+                and task["captcha_obj"]["type"] == "BBOX"
+            ):
+                app = BboxSolver(task)
+                app.mainloop()
+                solution = app.solution
+            else:
+                raise NotImplementedError("Captcha type not supported")
+            logger.info("Solution received.")
+            if solution == []:
+                raise NotImplementedError("Skip is not implemented.")
+            post_captcha_solution(args.url, auth, task["id"], solution)
             time.sleep(5)
         except Exception as e:
             logger.exception(f"Unhandled exception: {e}")

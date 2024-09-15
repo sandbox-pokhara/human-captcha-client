@@ -7,6 +7,7 @@ class BboxSolver(tk.Tk):
         super().__init__()
         self.data = data
         self.title("Captcha")
+        self.solution: list[int] = []
 
         # Keep the references of PhotoImage to prevent garbage collection
         self.photos: list[tk.PhotoImage] = []
@@ -98,7 +99,11 @@ class BboxSolver(tk.Tk):
         )
 
     def submit(self) -> None:
-        print(self.marked_points)
+        self.solution.clear()
+        for x, y in self.marked_points:
+            self.solution.append(x)
+            self.solution.append(y)
+        self.destroy()
 
     def skip(self) -> None:
-        print("skip")
+        self.destroy()
