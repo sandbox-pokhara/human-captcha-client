@@ -4,13 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "human-captcha-client"
-version = "1.0.0"
-dependencies = []
 requires-python = ">=3"
 authors = [{ name = "Pradish Bijukchhe", email = "pradish@sandbox.com.np" }]
 readme = "README.md"
 keywords = []
 classifiers = ["Programming Language :: Python :: 3"]
+dynamic = ["version", "dependencies"]
 
 [project.urls]
 Homepage = "https://github.com/sandbox-pokhara/human-captcha-client"
@@ -24,6 +23,10 @@ include-package-data = true
 
 [tool.setuptools.package-dir]
 "human_captcha_client" = "human_captcha_client"
+
+[tool.setuptools.dynamic]
+version = { attr = "project_l.__version__" }
+dependencies = { file = "requirements.txt" }
 
 [tool.isort]
 line_length = 79
