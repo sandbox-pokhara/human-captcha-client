@@ -2,7 +2,7 @@ import time
 from argparse import ArgumentParser
 from argparse import Namespace
 
-from ValLib.captcha.web import WebServerSolver
+from ValLib.captcha.web import WebServerSolver  # type:ignore
 
 from human_captcha_client import logger
 from human_captcha_client.auth import TokenAuth
@@ -11,11 +11,11 @@ from human_captcha_client.task import request_captcha_task
 
 
 def main_loop(args: Namespace):
-    auth = TokenAuth(args.api_key)
+    auth = TokenAuth(args.token)
     solver_server = WebServerSolver(address="127.0.0.1")
     while True:
         try:
-            task = request_captcha_task(auth)
+            task = request_captcha_task(args.url, auth)
             if "detail" in task:
                 time.sleep(5)
                 continue
@@ -25,7 +25,7 @@ def main_loop(args: Namespace):
                 task["captcha_obj"]["rqdata"], task["captcha_obj"]["sitekey"]
             )
             logger.info(f"Token received.")
-            post_captcha_solution(auth, task["id"], token)
+            post_captcha_solution(args.url, auth, task["id"], token)
             time.sleep(5)
         except Exception as e:
             logger.exception(f"Unhandled exception: {e}")
@@ -34,9 +34,9 @@ def main_loop(args: Namespace):
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument("api_key")
+    parser.add_argument("token")
+    parser.add_argument("--url", default="https://captcha.sandbox.com.np")
     args = parser.parse_args()
-
     main_loop(args)
 
 
