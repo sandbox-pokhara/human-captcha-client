@@ -25,7 +25,7 @@ include-package-data = true
 "human_captcha_client" = "human_captcha_client"
 
 [tool.setuptools.dynamic]
-version = { attr = "project_l.__version__" }
+version = { attr = "human_captcha_client.__version__" }
 dependencies = { file = "requirements.txt" }
 
 [tool.isort]
