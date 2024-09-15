@@ -2,6 +2,8 @@ import time
 from argparse import ArgumentParser
 from argparse import Namespace
 
+import chime  # type:ignore
+
 from human_captcha_client import __version__
 from human_captcha_client import logger
 from human_captcha_client.api import post_captcha_solution
@@ -46,6 +48,8 @@ def main_loop(args: Namespace):
                 continue
 
             logger.info(f"New task received!")
+            if not args.mute:
+                chime.success()
 
             if "rqdata" in task["captcha_obj"]:
                 solution = solver_server.token(
@@ -82,6 +86,7 @@ def main_loop(args: Namespace):
 def main():
     parser = ArgumentParser()
     parser.add_argument("token")
+    parser.add_argument("--mute", action="store_true")
     parser.add_argument("--url", default="https://captcha.sandbox.com.np")
     parser.add_argument(
         "-v", "--version", action="version", version=__version__
