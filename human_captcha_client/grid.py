@@ -1,6 +1,10 @@
 import tkinter as tk
 from typing import Any
 
+from PIL import ImageTk
+
+from human_captcha_client.utils import b64_to_tk
+
 
 class GridSolver(tk.Tk):
     def __init__(self, data: dict[str, Any]) -> None:
@@ -10,7 +14,7 @@ class GridSolver(tk.Tk):
         self.solution: list[int] = []
 
         # Keep the references of PhotoImage to prevent garbage collection
-        self.photos: list[tk.PhotoImage] = []
+        self.photos: list[ImageTk.PhotoImage] = []
 
         # Instruction
         self.instruction_label = tk.Label(
@@ -24,13 +28,12 @@ class GridSolver(tk.Tk):
         for i, img in enumerate(self.data["captcha_obj"]["example_images"]):
             col = i % 3
             row = i // 3
-            # remove the data:image/png;base64 portion of image
-            img = img.split(",")[1]
-            photo = tk.PhotoImage(data=img)
+
+            photo = b64_to_tk(img)
             self.photos.append(photo)
             btn: tk.Button = tk.Button(
                 self.example_image_frame,
-                image=photo,
+                image=photo,  # type:ignore
             )
             btn.grid(row=row, column=col, padx=10, pady=10)
 
@@ -45,14 +48,12 @@ class GridSolver(tk.Tk):
         for i, img in enumerate(self.data["captcha_obj"]["sample_images"]):
             col = i % 3
             row = i // 3
-            # remove the data:image/png;base64 portion of image
-            img = img.split(",")[1]
-            photo = tk.PhotoImage(data=img)
+            photo = b64_to_tk(img)
             self.photos.append(photo)
 
             btn: tk.Button = tk.Button(
                 self.grid_image_frame,
-                image=photo,
+                image=photo,  # type:ignore
                 command=lambda i=row, j=col: self.toggle_image(i, j),
             )
             btn.grid(row=row, column=col, padx=10, pady=10)
