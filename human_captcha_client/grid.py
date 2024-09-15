@@ -23,6 +23,7 @@ class GridSolver(tk.Tk):
         for i, img in enumerate(self.data["captcha_obj"]["example_images"]):
             col = i % 3
             row = i // 3
+            # remove the data:image/png;base64 portion of image
             img = img.split(",")[1]
             photo = tk.PhotoImage(data=img)
             self.photos.append(photo)
