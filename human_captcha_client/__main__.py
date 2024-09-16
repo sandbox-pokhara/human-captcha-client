@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 from argparse import Namespace
 
 import chime  # type:ignore
+import httpx
 
 from human_captcha_client import __version__
 from human_captcha_client import logger
@@ -77,6 +78,9 @@ def main_loop(args: Namespace):
                 post_captcha_solution(args.url, auth, task["id"], solution)
             else:
                 skip_captcha(args.url, auth, task["id"])
+            time.sleep(5)
+        except httpx.HTTPError as e:
+            logger.error(f"HTTP error: {e}")
             time.sleep(5)
         except Exception as e:
             logger.exception(f"Unhandled exception: {e}")
