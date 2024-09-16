@@ -37,6 +37,7 @@ def main_loop(args: Namespace):
 
     # Importing here because the package slows down when script is closed
     # TODO: code a custom web solver
+    from ValLib.captcha import exceptions as valexceptions  # type:ignore
     from ValLib.captcha.web import WebServerSolver  # type:ignore
 
     solver_server = WebServerSolver(address="127.0.0.1")
@@ -78,6 +79,9 @@ def main_loop(args: Namespace):
                 post_captcha_solution(args.url, auth, task["id"], solution)
             else:
                 skip_captcha(args.url, auth, task["id"])
+            time.sleep(5)
+        except valexceptions.HCaptchaTimeoutException:
+            logger.error("Captcha timed out.")
             time.sleep(5)
         except httpx.HTTPError as e:
             logger.error(f"HTTP error: {e}")
