@@ -42,7 +42,9 @@ def main_loop(args: Namespace):
 
     solver_server = WebServerSolver(address="127.0.0.1")
 
-    while True:
+    stop = False  # exit flag
+
+    while not stop:
         try:
             task = request_captcha_task(args.url, auth)
             if "detail" in task:
@@ -64,6 +66,7 @@ def main_loop(args: Namespace):
             ):
                 app = GridSolver(task)
                 app.mainloop()
+                stop = app.stop
                 solution = app.solution
             elif (
                 "type" in task["captcha_obj"]
@@ -71,6 +74,7 @@ def main_loop(args: Namespace):
             ):
                 app = BboxSolver(task)
                 app.mainloop()
+                stop = app.stop
                 solution = app.solution
             else:
                 raise NotImplementedError("Captcha type not supported")

@@ -62,16 +62,32 @@ class GridSolver(tk.Tk):
         # Buttons
         self.button_frame = tk.Frame()
         self.button_frame.pack(pady=20)
+
         self.submit_button: tk.Button = tk.Button(
             self.button_frame,
             text="Submit",
             command=self.submit,
         )
         self.submit_button.pack(side=tk.LEFT, padx=5)
+
         self.skip_button: tk.Button = tk.Button(
             self.button_frame,
             text="Skip",
             command=self.skip,
+        )
+        self.skip_button.pack(side=tk.LEFT, padx=5)
+
+        self.submit_button: tk.Button = tk.Button(
+            self.button_frame,
+            text="Submit and Stop",
+            command=self.submit_and_stop,
+        )
+        self.submit_button.pack(side=tk.LEFT, padx=5)
+
+        self.skip_button: tk.Button = tk.Button(
+            self.button_frame,
+            text="Skip and Stop",
+            command=self.skip_and_stop,
         )
         self.skip_button.pack(side=tk.LEFT, padx=5)
 
@@ -95,3 +111,11 @@ class GridSolver(tk.Tk):
 
     def skip(self) -> None:
         self.destroy()
+
+    def submit_and_stop(self) -> None:
+        self.stop = True
+        self.submit()
+
+    def skip_and_stop(self) -> None:
+        self.stop = True
+        self.skip()
