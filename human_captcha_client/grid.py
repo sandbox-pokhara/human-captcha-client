@@ -65,7 +65,7 @@ class GridSolver(tk.Tk):
         self.submit_button: tk.Button = tk.Button(
             self.button_frame,
             text="Submit",
-            command=self.submit_selection,
+            command=self.submit,
         )
         self.submit_button.pack(side=tk.LEFT, padx=5)
         self.skip_button: tk.Button = tk.Button(
@@ -74,6 +74,10 @@ class GridSolver(tk.Tk):
             command=self.skip,
         )
         self.skip_button.pack(side=tk.LEFT, padx=5)
+
+        # hotkeys
+        self.bind("<Return>", lambda e: self.submit())
+        self.bind("<Escape>", lambda e: self.skip())
 
     def toggle_image(self, i: int, j: int) -> None:
         """Toggle the selection of an image in the grid."""
@@ -85,7 +89,7 @@ class GridSolver(tk.Tk):
             self.selected_images.append(index)
             self.image_buttons[index].config(relief="sunken")
 
-    def submit_selection(self) -> None:
+    def submit(self) -> None:
         self.solution = self.selected_images
         self.destroy()
 

@@ -82,6 +82,10 @@ class BboxSolver(tk.Tk):
         )
         self.clear_button.pack(side=tk.LEFT, padx=5)
 
+        # Hotkeys
+        self.bind("<Return>", lambda e: self.submit())
+        self.bind("<Escape>", lambda e: self.skip())
+
     def mark_point(self, event: Any) -> None:
         """Mark a point where the user clicks on the canvas."""
         x, y = event.x, event.y
