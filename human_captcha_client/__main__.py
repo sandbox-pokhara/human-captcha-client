@@ -79,7 +79,6 @@ def main_loop(args: Namespace):
                 post_captcha_solution(args.url, auth, task["id"], solution)
             else:
                 skip_captcha(args.url, auth, task["id"])
-            time.sleep(5)
         except valexceptions.HCaptchaTimeoutException:
             logger.error("Captcha timed out.")
             time.sleep(5)
