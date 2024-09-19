@@ -12,6 +12,7 @@ class GridSolver(tk.Tk):
         self.data = data
         self.title("Captcha")
         self.solution: list[int] = []
+        self.stop = False
 
         # Keep the references of PhotoImage to prevent garbage collection
         self.photos: list[ImageTk.PhotoImage] = []
