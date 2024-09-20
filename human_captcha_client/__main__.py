@@ -40,8 +40,6 @@ def main_loop(args: Namespace):
     from ValLib.captcha import exceptions as valexceptions  # type:ignore
     from ValLib.captcha.web import WebServerSolver  # type:ignore
 
-    solver_server = WebServerSolver(address="127.0.0.1")
-
     stop = False  # exit flag
 
     while not stop:
@@ -56,6 +54,7 @@ def main_loop(args: Namespace):
                 chime.success()
 
             if "rqdata" in task["captcha_obj"]:
+                solver_server = WebServerSolver(address="127.0.0.1")
                 solution = solver_server.token(
                     task["captcha_obj"]["rqdata"],
                     task["captcha_obj"]["sitekey"],
